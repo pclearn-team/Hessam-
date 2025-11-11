@@ -15,9 +15,11 @@ import {
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import "./assets/fonts/fonts.css";
 
 export default function LoginSignupFlip() {
   const navigate = useNavigate();
+
   const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,21 +46,33 @@ export default function LoginSignupFlip() {
     if (Object.keys(err).length === 0) {
       navigate("/auth", { state: { email } });
     } else {
-      setToast({ show: true, message: "لطفا فیلدها را کامل کنید", type: "error" });
+      setToast({
+        show: true,
+        message: "لطفا فیلدها را کامل کنید",
+        type: "error",
+      });
     }
   };
 
   const handleGoogleSuccess = (credentialResponse) => {
     console.log("Google Token:", credentialResponse.credential);
-    setToast({ show: true, message: "ورود با گوگل موفق بود 🎉", type: "success" });
+    setToast({
+      show: true,
+      message: "ورود با گوگل موفق بود 🎉",
+      type: "success",
+    });
     navigate("/auth");
   };
 
   const handleGoogleError = () => {
-    setToast({ show: true, message: "ورود با گوگل با خطا مواجه شد", type: "error" });
+    setToast({
+      show: true,
+      message: "ورود با گوگل با خطا مواجه شد",
+      type: "error",
+    });
   };
 
-  // استایل‌ها
+  // Style
   const containerStyles = {
     perspective: "1500px",
     width: "100%",
@@ -90,24 +104,31 @@ export default function LoginSignupFlip() {
     backdropFilter: "blur(20px)",
     border: "1px solid rgba(255,255,255,0.2)",
     boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+    direction: "rtl",
+    fontFamily: "Vazir, sans-serif",
   };
 
   const frontStyles = { ...sideStyles, transform: "rotateY(0deg)" };
   const backStyles = { ...sideStyles, transform: "rotateY(180deg)" };
+
   const headerStyles = {
     fontSize: { xs: "1.6rem", sm: "2rem" },
     color: "#fff",
     fontWeight: "bold",
     mb: 3,
     textAlign: "center",
+    fontFamily: "Vazir, sans-serif",
   };
+
   const commonBtnStyles = {
     width: "100%",
     py: { xs: 1, sm: 1.5 },
-    mt: 2,
+    mt: 1,
     fontSize: { xs: "0.9rem", sm: "1rem" },
     fontWeight: "bold",
+    fontFamily: "Vazir, sans-serif",
   };
+
   const secondaryBtnStyles = {
     width: "100%",
     mt: 1,
@@ -117,10 +138,47 @@ export default function LoginSignupFlip() {
     textTransform: "none",
     bgcolor: "transparent",
     "&:hover": { bgcolor: "rgba(255,255,255,0.1)" },
+    fontFamily: "Vazir, sans-serif",
   };
-  const inputPropsRight = { style: { textAlign: "right" } };
+
+  const textFieldStyle = {
+    direction: "rtl",
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "8px",
+      "& fieldset": {
+        borderColor: "#fff",
+      },
+      "&:hover fieldset": {
+        borderColor: "#fff",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#fff",
+        boxShadow: "0 0 4px rgba(255,255,255,0.5)",
+      },
+      "& input": {
+        paddingRight: "14px",
+        paddingLeft: "8px",
+        textAlign: "right",
+        color: "#fff",
+        direction: "rtl",
+        fontFamily: "Vazir, sans-serif",
+      },
+    },
+    "& .MuiFormHelperText-root": {
+      color: "#ff7373",
+      fontWeight: "bold",
+      textAlign: "right",
+      fontFamily: "Vazir, sans-serif",
+    },
+    "& input::placeholder": {
+      color: "rgba(255,255,255,0.8)",
+      textAlign: "right",
+      fontFamily: "Vazir, sans-serif",
+    },
+  };
+
   const pulseAnimation = {
-    scale: [1, 1.2, 1],
+    scale: [1, 1.05, 1],
     transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
   };
 
@@ -133,9 +191,9 @@ export default function LoginSignupFlip() {
           alignItems: "center",
           justifyContent: "center",
           background: "linear-gradient(to bottom right, #0d47a1, #bf360c)",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
           p: { xs: 1.5, sm: 2 },
+          direction: "rtl",
+          fontFamily: "Vazir, sans-serif",
         }}
       >
         <Box sx={containerStyles}>
@@ -143,21 +201,20 @@ export default function LoginSignupFlip() {
             {/* Front: Login */}
             <Box sx={frontStyles}>
               <motion.div animate={pulseAnimation}>
-                <Typography sx={headerStyles}>pc learn ورود در</Typography>
+                <Typography sx={headerStyles}>ورود به PC Learn</Typography>
               </motion.div>
               <form onSubmit={handleSubmit}>
                 <TextField
-                  label="email"
                   fullWidth
                   margin="normal"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={!!errors.email}
                   helperText={errors.email}
-                  InputProps={inputPropsRight}
+                  sx={textFieldStyle}
+                  placeholder="ایمیل خود را وارد کنید"
                 />
                 <TextField
-                  label="password"
                   fullWidth
                   margin="normal"
                   type={showPass ? "text" : "password"}
@@ -165,39 +222,33 @@ export default function LoginSignupFlip() {
                   onChange={(e) => setPassword(e.target.value)}
                   error={!!errors.password}
                   helperText={errors.password}
+                  sx={textFieldStyle}
+                  placeholder="رمز عبور خود را وارد کنید"
                   InputProps={{
-                    ...inputPropsRight,
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton onClick={() => setShowPass(!showPass)}>
-                          {showPass ? <VisibilityOff /> : <Visibility />}
+                          {showPass ? (
+                            <VisibilityOff sx={{ color: "#fff" }} />
+                          ) : (
+                            <Visibility sx={{ color: "#fff" }} />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ),
                   }}
                 />
-
-                <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        sx={{ color: "white" }}
-                      />
-                    }
-                    label="مرا به خاطر بسپار"
-                    sx={{ color: "white", ml: 0 }}
-                  />
-                </Box>
-
-                <Button
-                  variant="contained"
-                  sx={secondaryBtnStyles}
-                  onClick={() => navigate("/forgot-password")}
-                >
-                  فراموشی رمز عبور؟
-                </Button>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      sx={{ color: "#fff" }}
+                    />
+                  }
+                  label="مرا به خاطر بسپار"
+                  sx={{ color: "#fff", ml: 0 }}
+                />
 
                 <Button type="submit" variant="contained" sx={commonBtnStyles}>
                   ورود
@@ -225,31 +276,30 @@ export default function LoginSignupFlip() {
             {/* Back: Signup */}
             <Box sx={backStyles}>
               <motion.div animate={pulseAnimation}>
-                <Typography sx={headerStyles}>pc learn ثبت نام در</Typography>
+                <Typography sx={headerStyles}>ثبت‌نام در PC Learn</Typography>
               </motion.div>
               <form onSubmit={handleSubmit}>
                 <TextField
-                  label="full name"
                   fullWidth
                   margin="normal"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   error={!!errors.name}
                   helperText={errors.name}
-                  InputProps={inputPropsRight}
+                  sx={textFieldStyle}
+                  placeholder="نام کامل خود را وارد کنید"
                 />
                 <TextField
-                  label="email"
                   fullWidth
                   margin="normal"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={!!errors.email}
                   helperText={errors.email}
-                  InputProps={inputPropsRight}
+                  sx={textFieldStyle}
+                  placeholder="ایمیل خود را وارد کنید"
                 />
                 <TextField
-                  label="password"
                   fullWidth
                   margin="normal"
                   type={showPass ? "text" : "password"}
@@ -257,19 +307,23 @@ export default function LoginSignupFlip() {
                   onChange={(e) => setPassword(e.target.value)}
                   error={!!errors.password}
                   helperText={errors.password}
+                  sx={textFieldStyle}
+                  placeholder="رمز عبور خود را وارد کنید"
                   InputProps={{
-                    ...inputPropsRight,
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton onClick={() => setShowPass(!showPass)}>
-                          {showPass ? <VisibilityOff /> : <Visibility />}
+                          {showPass ? (
+                            <VisibilityOff sx={{ color: "#fff" }} />
+                          ) : (
+                            <Visibility sx={{ color: "#fff" }} />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ),
                   }}
                 />
                 <TextField
-                  label="Confirm password"
                   fullWidth
                   margin="normal"
                   type={showConfirmPass ? "text" : "password"}
@@ -277,12 +331,19 @@ export default function LoginSignupFlip() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   error={!!errors.confirmPassword}
                   helperText={errors.confirmPassword}
+                  sx={textFieldStyle}
+                  placeholder="رمز عبور را دوباره وارد کنید"
                   InputProps={{
-                    ...inputPropsRight,
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton onClick={() => setShowConfirmPass(!showConfirmPass)}>
-                          {showConfirmPass ? <VisibilityOff /> : <Visibility />}
+                        <IconButton
+                          onClick={() => setShowConfirmPass(!showConfirmPass)}
+                        >
+                          {showConfirmPass ? (
+                            <VisibilityOff sx={{ color: "#fff" }} />
+                          ) : (
+                            <Visibility sx={{ color: "#fff" }} />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -322,7 +383,7 @@ export default function LoginSignupFlip() {
         >
           <Alert
             severity={toast.type === "success" ? "success" : "error"}
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", fontFamily: "Vazir, sans-serif" }}
           >
             {toast.message}
           </Alert>

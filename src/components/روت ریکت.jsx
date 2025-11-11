@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginSignupFlip from "./components/LoginSignupFlip";
-import ForgotPassword from "./components/ForgotPassword";
-import Auth from"./components/Auth";
-import "./assets/1.css"
+import LoginSignupFlip from "./LoginSignupFlip";
+import ForgotPassword from "./ForgotPassword";
+import Auth from"./Auth";
+import "./1.css"
 
 function App() {
   return (
